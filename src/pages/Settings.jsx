@@ -38,6 +38,11 @@ import {
   HStack,
   ButtonGroup,
   IconButton,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  Accordion,
 } from "@chakra-ui/react";
 import swal from "sweetalert";
 
@@ -49,16 +54,19 @@ import {
   editProduct,
   deleteProduct,
   getCategories,
+  getSuppliers,
 } from "../store/storageSlice";
 
 import { RxUpdate } from "react-icons/rx";
 import { addUser, deleteUser, editUser, getUsers } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import Suppliers from "../components/Suppliers";
 
 const Settings = () => {
   const isLogin = useSelector((state) => state.authSlice.isLogin);
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
+  const [supplierName, setSupplierName] = useState("");
   const [title, setTitle] = useState("");
   const [buyPrice, setBuyPrice] = useState();
   const [sellPrice, setSellPrice] = useState();
@@ -68,6 +76,7 @@ const Settings = () => {
   const products = useSelector((state) => state.storageSlice.products);
   const categories = useSelector((state) => state.storageSlice.categories);
   const [erorr, setErorr] = useState("");
+  const activeUser = useSelector((state) => state.authSlice.activeUser)[0];
   // for selected product for update
   const [selected, setSelected] = useState({});
   const [filter, setFilter] = useState("");
@@ -84,6 +93,8 @@ const Settings = () => {
   const [showUserPassword, setShowUserPassword] = useState(false);
   const [wrongEmail, setWrongEmail] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
+  const [consists, setConsists] = useState();
+  const suppliers = useSelector((state) => state.storageSlice.suppliers);
   //user functions
 
   const addUserHandler = (e) => {
@@ -161,8 +172,12 @@ const Settings = () => {
     dispatch(getProducts());
     dispatch(getUsers());
     dispatch(getCategories());
+    dispatch(getSuppliers());
     !isLogin && navigate("/signin");
-  }, [dispatch, isLogin, navigate]);
+    if (activeUser) {
+      // activeUser.userType = "user" ? Navigate("/") : null;
+    }
+  }, [dispatch, isLogin, navigate, activeUser]);
 
   const addProductHandler = (e) => {
     e.preventDefault();
@@ -252,6 +267,7 @@ const Settings = () => {
     setSellPrice("");
     setUpdate(false);
   };
+
   return (
     <Box
       m={"40px"}
@@ -268,6 +284,7 @@ const Settings = () => {
         <TabList gap={"40px"}>
           <Tab>Users</Tab>
           <Tab>Products</Tab>
+          <Tab>Supplaiers</Tab>
         </TabList>
 
         <TabPanels>
@@ -395,6 +412,7 @@ const Settings = () => {
                 );
               })}
           </TabPanel>
+
           <TabPanel overflow={"auto"}>
             <form onSubmit={update ? updateHandler : addProductHandler}>
               <Grid templateColumns={"repeat(2,1fr)"} w="100%" gap={"10px"}>
@@ -454,6 +472,15 @@ const Settings = () => {
                 <InputGroup bgColor={"#fafafa"} borderRadius="5px">
                   <Input
                     type={"number"}
+                    placeholder="Consists"
+                    value={consists}
+                    onChange={(e) => setConsists(e.target.value)}
+                    min="1"
+                  />
+                </InputGroup>
+                <InputGroup bgColor={"#fafafa"} borderRadius="5px">
+                  <Input
+                    type={"number"}
                     placeholder="Buy Price"
                     isRequired
                     value={buyPrice}
@@ -472,6 +499,29 @@ const Settings = () => {
                     min="1"
                   />
                 </InputGroup>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                    bgColor="#A7D7C5"
+                    _hover={{ bgColor: "#8FD7C2" }}
+                    border={supplierName === "supplierName" && "1px solid red"}
+                  >
+                    {supplierName ? supplierName : "Supplier Name"}
+                  </MenuButton>
+                  <MenuList>
+                    {suppliers.map((item) => {
+                      return (
+                        <MenuItem
+                          value={item.name}
+                          onClick={(e) => setSupplierName(e.target.value)}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </MenuList>
+                </Menu>
                 <Button
                   rightIcon={update ? <RxUpdate /> : <AddIcon />}
                   bgColor="#A7D7C5"
@@ -560,6 +610,9 @@ const Settings = () => {
                 </Tbody>
               </Table>
             </Box>
+          </TabPanel>
+          <TabPanel>
+            <Suppliers />
           </TabPanel>
         </TabPanels>
       </Tabs>

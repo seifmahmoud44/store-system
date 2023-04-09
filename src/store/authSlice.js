@@ -84,6 +84,7 @@ const authSlice = createSlice({
     signout: (state) => {
       state.isLogin = false;
       state.activeUser = "";
+      state.erorrMessage = "";
     },
   },
 

@@ -13,6 +13,7 @@ import Settings from "./pages/Settings";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import Actions from "./pages/Actions";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />,
+      },
+      {
+        path: "actions",
+        element: <Actions />,
       },
     ],
   },

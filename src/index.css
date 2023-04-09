@@ -50,3 +50,10 @@ label{
 .css-172amhz:active, .css-172amhz[data-active]{
   background-color: #cae9dd !important;
 }
+
+.date-range{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}

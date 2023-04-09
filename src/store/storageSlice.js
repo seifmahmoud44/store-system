@@ -1,7 +1,49 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const initialState = { products: [], sellProducts: [], categories: [] };
+const initialState = {
+  products: [],
+  sellProducts: [],
+  categories: [],
+  actions: [],
+  suppliers: [],
+};
+
+//actions extra reducers
+
+export const getSuppliers = createAsyncThunk(
+  "storageSlice/getSuppliers",
+  async (args, thunkAPI) => {
+    try {
+      const suppliers = (await axios.get(`http://localhost:9000/suppliers`))
+        .data;
+
+      return suppliers;
+    } catch {}
+  }
+);
+
+export const getActions = createAsyncThunk(
+  "storageSlice/getActions",
+  async (args, thunkAPI) => {
+    try {
+      const product = (await axios.get(`http://localhost:9000/actions`)).data;
+
+      return product;
+    } catch {}
+  }
+);
+
+export const addAction = createAsyncThunk(
+  "storageSlice/addAction",
+  async (args, thunkAPI) => {
+    try {
+      const product = await axios.post(`http://localhost:9000/actions`, args);
+
+      return product;
+    } catch {}
+  }
+);
 
 export const getCategories = createAsyncThunk(
   "storageSlice/getCategories",
@@ -45,7 +87,6 @@ export const getSellProducts = createAsyncThunk(
 export const addSellProduct = createAsyncThunk(
   "storageSlice/addSellProduct",
   async (args, thunkAPI) => {
-    console.log(args);
     try {
       const product = (
         await axios.post(`http://localhost:9000/sellProducts`, args)
@@ -59,7 +100,6 @@ export const addSellProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "storageSlice/deleteProduct",
   async (args, thunkAPI) => {
-    console.log(args);
     try {
       const product = axios.delete(`http://localhost:9000/products/${args}`);
 
@@ -71,7 +111,6 @@ export const deleteProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "storageSlice/editProduct",
   async (args, thunkAPI) => {
-    console.log(args);
     try {
       const product = axios.put(
         `http://localhost:9000/products/${args.id}`,
@@ -129,6 +168,17 @@ const storageSlice = createSlice({
 
     builder.addCase(getCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
+    });
+    //actions
+    builder.addCase(getActions.fulfilled, (state, action) => {
+      state.actions = action.payload;
+    });
+    builder.addCase(addAction.fulfilled, (state, action) => {
+      state.actions.push(action.payload);
+    });
+    //suppliers
+    builder.addCase(getSuppliers.fulfilled, (state, action) => {
+      state.suppliers = action.payload;
     });
   },
 });

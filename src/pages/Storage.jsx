@@ -27,9 +27,10 @@ const Storage = () => {
       padding={"10px 40px"}
     >
       <Flex justify={"center"} align="center" gap={"20px"}>
-        {state.map((state) => {
+        {state.map((state, indx) => {
           return (
             <Button
+              key={indx}
               bgColor={"#C6F6D5"}
               _hover={{ bgColor: "#b9eac8" }}
               my="10px"
@@ -57,6 +58,7 @@ const Storage = () => {
           .filter((product) => product.category === selected)
           .map((product) => (
             <Flex
+              key={product.id}
               w={"250px"}
               _hover={{ bgColor: "#b9eac8" }}
               bgColor={"#C6F6D5"}

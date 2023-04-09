@@ -1,26 +1,29 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Button,
   Flex,
   FormControl,
-  FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../store/authSlice";
 import { signin } from "../store/authSlice";
+import { addAction } from "../store/storageSlice";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const users = useSelector((state) => state.authSlice.users);
+
   const isLogin = useSelector((state) => state.authSlice.isLogin);
   const dispatch = useDispatch();
+  const today = format(new Date(), "yyyy-MM-dd");
+  const time = format(new Date(), "HH:mm:ss");
 
   useEffect(() => {
     dispatch(getUsers());
@@ -37,6 +40,16 @@ const Signin = () => {
     e.preventDefault();
     const data = { userEmail, userPassword };
     dispatch(signin(data));
+    const activeUser = users.find((user) => user.userEmail === userEmail);
+
+    dispatch(
+      addAction({
+        date: today,
+        time,
+        title: "signin",
+        activeUser,
+      })
+    );
   };
   return (
     <Flex
@@ -63,17 +76,17 @@ const Signin = () => {
               type="email"
               onChange={(e) => setUserEmail(e.target.value)}
               placeholder="Email"
-              borderColor={erorrMessage === "undefind email" && "red"}
+              borderColor={erorrMessage === "undefind userEmail" && "red"}
             />
 
-            {erorrMessage === "undefind email" && (
+            {erorrMessage === "undefind userEmail" && (
               <Text
                 position={"absolute"}
                 fontSize="13px"
                 color={"red"}
                 left="5px"
               >
-                {erorrMessage}
+                Undefind Email
               </Text>
             )}
           </FormControl>

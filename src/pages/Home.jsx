@@ -1,16 +1,8 @@
-import {
-  AddIcon,
-  ChevronDownIcon,
-  NotAllowedIcon,
-  RepeatIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Menu,
   Flex,
-  MenuButton,
   Thead,
   Tr,
   Th,
@@ -20,14 +12,12 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  MenuList,
-  MenuItem,
   Center,
   Tag,
   Text,
   HStack,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -36,7 +26,13 @@ import {
   getProducts,
   getSellProducts,
   editSellProductSlice,
+  addAction,
 } from "../store/storageSlice";
+
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+
+import { format } from "date-fns";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -53,11 +49,8 @@ const Home = () => {
   const [editMood, setEditMood] = useState(false);
   const isLogin = useSelector((state) => state.authSlice.isLogin);
 
-  const day = new Date().getDate();
-
-  const month = (new Date().getMonth() + 1).toString();
-  const year = new Date().getFullYear();
-  const today = `${day}-${month}-${year}`;
+  const date = format(new Date(), "yyyy-MM-dd");
+  const time = format(new Date(), "HH-m");
 
   useEffect(() => {
     dispatch(getProducts());
@@ -82,12 +75,24 @@ const Home = () => {
       title: selectedSellProduct.title,
       category: selectedSellProduct.category,
       buyPrice: selectedSellProduct.buyPrice,
-      date: today,
+      date,
       sellPrice,
       count,
       activeUser,
     };
     dispatch(addSellProduct(sendData));
+    dispatch(
+      addAction({
+        title: selectedSellProduct.title,
+        category: selectedSellProduct.category,
+        buyPrice: selectedSellProduct.buyPrice,
+        sellPrice,
+        count,
+        activeUser,
+        date,
+        time,
+      })
+    );
 
     let changeCount = {
       id: selectedSellProduct.id,
@@ -270,7 +275,7 @@ const Home = () => {
           <Tbody>
             {sellProducts &&
               sellProducts
-                .filter((product) => product.date === today)
+                .filter((product) => product.date === date)
                 .map((item) => {
                   return (
                     <Tr key={item.id} h={"20px"}>

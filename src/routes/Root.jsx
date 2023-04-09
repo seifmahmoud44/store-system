@@ -19,10 +19,15 @@ import { IoSettingsSharp } from "react-icons/io5";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RiMapPinUserFill } from "react-icons/ri";
+import { MdOutlinePendingActions } from "react-icons/md";
 import { signout } from "../store/authSlice";
+import { addAction } from "../store/storageSlice";
+import { format } from "date-fns";
 
 const Root = () => {
   const activeUser = useSelector((state) => state.authSlice.activeUser)[0];
+  const today = format(new Date(), "yyyy-MM-dd");
+  const time = format(new Date(), "HH:mm");
   const dispatch = useDispatch();
   return (
     <Box
@@ -70,6 +75,14 @@ const Root = () => {
                 textAlign="center"
                 onClick={() => {
                   dispatch(signout());
+                  dispatch(
+                    addAction({
+                      activeUser,
+                      date: today,
+                      time,
+                      title: "signout",
+                    })
+                  );
                 }}
               >
                 log Out
@@ -80,9 +93,18 @@ const Root = () => {
         <NavLink className={"link"} to={"/storage"}>
           <BsDatabaseFillCheck />
         </NavLink>
-        <NavLink className={"link"} to={"/settings"}>
-          <IoSettingsSharp />
-        </NavLink>
+
+        {activeUser &&
+          (activeUser.userType === "admin" ? (
+            <Box>
+              <NavLink className={"link"} to={"/settings"}>
+                <IoSettingsSharp />
+              </NavLink>
+              <NavLink className={"link"} to={"/actions"}>
+                <MdOutlinePendingActions />
+              </NavLink>
+            </Box>
+          ) : null)}
       </Box>
       <Box flexGrow={"1"} margin="auto " h={"100vh"}>
         <Outlet />

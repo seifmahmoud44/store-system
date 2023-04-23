@@ -15,8 +15,9 @@ export const getSuppliers = createAsyncThunk(
   "storageSlice/getSuppliers",
   async (args, thunkAPI) => {
     try {
-      const suppliers = (await axios.get(`http://localhost:9000/suppliers`))
-        .data;
+      const suppliers = (
+        await axios.get(`https://store-api-z3le.onrender.com/suppliers`)
+      ).data;
 
       return suppliers;
     } catch {}
@@ -27,7 +28,9 @@ export const getActions = createAsyncThunk(
   "storageSlice/getActions",
   async (args, thunkAPI) => {
     try {
-      const product = (await axios.get(`http://localhost:9000/actions`)).data;
+      const product = (
+        await axios.get(`https://store-api-z3le.onrender.com/actions`)
+      ).data;
 
       return product;
     } catch {}
@@ -38,7 +41,10 @@ export const addAction = createAsyncThunk(
   "storageSlice/addAction",
   async (args, thunkAPI) => {
     try {
-      const product = await axios.post(`http://localhost:9000/actions`, args);
+      const product = await axios.post(
+        `https://store-api-z3le.onrender.com/actions`,
+        args
+      );
 
       return product;
     } catch {}
@@ -49,8 +55,9 @@ export const getCategories = createAsyncThunk(
   "storageSlice/getCategories",
   async (args, thunkAPI) => {
     try {
-      const product = (await axios.get(`http://localhost:9000/categories`))
-        .data;
+      const product = (
+        await axios.get(`https://store-api-z3le.onrender.com/categories`)
+      ).data;
 
       return product;
     } catch {}
@@ -63,7 +70,7 @@ export const editSellProductSlice = createAsyncThunk(
     console.log(args);
     try {
       const product = axios.put(
-        `http://localhost:9000/sellProducts/${args.id}`,
+        `https://store-api-z3le.onrender.com/sellProducts/${args.id}`,
         args
       );
 
@@ -76,8 +83,9 @@ export const getSellProducts = createAsyncThunk(
   "storageSlice/getSellProducts",
   async (args, thunkAPI) => {
     try {
-      const product = (await axios.get(`http://localhost:9000/sellProducts`))
-        .data;
+      const product = (
+        await axios.get(`https://store-api-z3le.onrender.com/sellProducts`)
+      ).data;
 
       return product;
     } catch {}
@@ -89,7 +97,10 @@ export const addSellProduct = createAsyncThunk(
   async (args, thunkAPI) => {
     try {
       const product = (
-        await axios.post(`http://localhost:9000/sellProducts`, args)
+        await axios.post(
+          `https://store-api-z3le.onrender.com/sellProducts`,
+          args
+        )
       ).data;
 
       return product;
@@ -101,7 +112,9 @@ export const deleteProduct = createAsyncThunk(
   "storageSlice/deleteProduct",
   async (args, thunkAPI) => {
     try {
-      const product = axios.delete(`http://localhost:9000/products/${args}`);
+      const product = axios.delete(
+        `https://store-api-z3le.onrender.com/products/${args}`
+      );
 
       return product;
     } catch {}
@@ -113,7 +126,7 @@ export const editProduct = createAsyncThunk(
   async (args, thunkAPI) => {
     try {
       const product = axios.put(
-        `http://localhost:9000/products/${args.id}`,
+        `https://store-api-z3le.onrender.com/products/${args.id}`,
         args
       );
 
@@ -126,7 +139,10 @@ export const addProduct = createAsyncThunk(
   "storageSlice/addProduct",
   async (args, thunkAPI) => {
     try {
-      const product = axios.post("http://localhost:9000/products", args);
+      const product = axios.post(
+        "https://store-api-z3le.onrender.com/products",
+        args
+      );
       return product;
     } catch {}
   }
@@ -136,7 +152,9 @@ export const getProducts = createAsyncThunk(
   "storageSlice/getProduct",
   async (args, thunkAPI) => {
     try {
-      const products = await axios.get("http://localhost:9000/products");
+      const products = await axios.get(
+        "https://store-api-z3le.onrender.com/products"
+      );
       return products.data;
     } catch {}
   }

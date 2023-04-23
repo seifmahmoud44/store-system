@@ -284,7 +284,7 @@ const Settings = () => {
         <TabList gap={"40px"}>
           <Tab>Users</Tab>
           <Tab>Products</Tab>
-          <Tab>Supplaiers</Tab>
+          {/* <Tab>Supplaiers</Tab> */}
         </TabList>
 
         <TabPanels>
@@ -611,9 +611,9 @@ const Settings = () => {
               </Table>
             </Box>
           </TabPanel>
-          <TabPanel>
+          {/* <TabPanel>
             <Suppliers />
-          </TabPanel>
+          </TabPanel> */}
         </TabPanels>
       </Tabs>
     </Box>

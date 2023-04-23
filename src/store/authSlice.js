@@ -12,7 +12,9 @@ export const getUsers = createAsyncThunk(
   "authSlice/getUsers",
   async (args, thunkAPI) => {
     try {
-      const user = (await axios.get("http://localhost:9000/users")).data;
+      const user = (
+        await axios.get("https://store-api-z3le.onrender.com/users")
+      ).data;
 
       return user;
     } catch {}
@@ -23,7 +25,10 @@ export const addUser = createAsyncThunk(
   "authSlice/addUser",
   async (args, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:9000/users", args);
+      const res = await axios.post(
+        "https://store-api-z3le.onrender.com/users",
+        args
+      );
 
       return res;
     } catch {}
@@ -33,7 +38,9 @@ export const deleteUser = createAsyncThunk(
   "authSlice/deleteUser",
   async (args, thunkAPI) => {
     try {
-      const res = await axios.delete(`http://localhost:9000/users/${args}`);
+      const res = await axios.delete(
+        `https://store-api-z3le.onrender.com/users/${args}`
+      );
 
       return res;
     } catch {}
@@ -45,7 +52,7 @@ export const editUser = createAsyncThunk(
   async (args, thunkAPI) => {
     try {
       const res = await axios.put(
-        `http://localhost:9000/users/${args.id}`,
+        `https://store-api-z3le.onrender.com/users/${args.id}`,
         args
       );
 

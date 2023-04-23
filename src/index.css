@@ -57,3 +57,15 @@ label{
   left: 50%;
   transform: translateX(-50%);
 }
+.note {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #cae9dd;
+  text-align: center;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+}

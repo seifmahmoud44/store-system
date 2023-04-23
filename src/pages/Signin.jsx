@@ -134,6 +134,11 @@ const Signin = () => {
           </Button>
         </form>
       </Box>
+      <div className="note">
+        <h1>USE IT FOR TRY</h1>
+        <p>Email : mom@example.com</p>
+        <p>Password : 123456</p>
+      </div>
     </Flex>
   );
 };
